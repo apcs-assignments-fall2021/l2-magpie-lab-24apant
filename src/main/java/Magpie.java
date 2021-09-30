@@ -1,3 +1,5 @@
+import java.util.Locale;
+
 /**
  * A program to carry on conversations with a human user.
  * This is the initial version that:  
@@ -31,17 +33,35 @@ public class Magpie
     public String getResponse(String statement)
     {
         String response = "";
-        if (statement.indexOf("no") >= 0)
+        if (findWord(statement, "no") != -1)
         {
             response = "Why so negative?";
         }
-        else if (statement.indexOf("mother") >= 0
-                || statement.indexOf("father") >= 0
-                || statement.indexOf("sister") >= 0
-                || statement.indexOf("brother") >= 0)
+        else if (findWord(statement, "mother") != -1 || findWord(statement, "father") != -1 ||
+                findWord(statement, "sister") != -1 || findWord(statement, "brother") != -1)
         {
             response = "Tell me more about your family.";
         }
+        else if (findWord(statement, "dog") != -1 || findWord(statement, "cat") != -1){
+            response = "Tell me more about your pets.";
+        }
+        else if (statement.contains("Nathan") || statement.contains("nathan")){
+            response = "He sounds like a good teacher.";
+        }
+        else if (statement.trim().equals("")){
+            response = "Please say something.";
+        }
+
+        else if (statement.contains("soccer") || statement.contains("basketball") || statement.contains("footbal") || statement.contains("volleyball")){
+            response = "That sounds like a fun sport.";
+        }
+        else if (statement.contains("Ice cream") || statement.contains("ice cream")){
+            response = "I looove Ice cream.";
+        }
+        else if (statement.contains("Spanish") || statement.contains("spanish")){
+            response = "I am learning spanish right now.";
+        }
+
         else
         {
             response = getRandomResponse();
@@ -55,7 +75,7 @@ public class Magpie
      */
     public String getRandomResponse()
     {
-        final int NUMBER_OF_RESPONSES = 4;
+        final int NUMBER_OF_RESPONSES = 6;
         double r = Math.random();
         int whichResponse = (int)(r * NUMBER_OF_RESPONSES);
         String response = "";
@@ -76,7 +96,13 @@ public class Magpie
         {
             response = "You don't say.";
         }
-    
+        else if (whichResponse == 4){
+            response = "LOL, what a meme.";
+        }
+
+        else if (whichResponse == 5){
+            response = "Sorry, I couldn't understand that.";
+        }
         return response;
     }
 
@@ -90,6 +116,16 @@ public class Magpie
     // The method returns the index of the first character in word
     // if it is found, and returns -1 otherwise. 
     public int findWord(String str, String word) {
+        String newStr = " " + str + " ";
+        String firstLetter = word.substring(0, 1);
+
+        if(newStr.contains(" " + word + " ")){
+            return str.indexOf(word);
+        }
+        else if (newStr.contains(" " + firstLetter.toUpperCase() + word.substring(1))) {
+            return str.indexOf(firstLetter.toUpperCase() + word.substring(1));
+        }
+
         return -1;
     }
 
@@ -104,8 +140,9 @@ public class Magpie
      */
     public String transformIWantStatement(String statement)
     {
+
         //your code here
-        return "";
+        return "Would you really be happy if you had" + statement.substring(6) + "?";
     }
 
     /**
@@ -117,7 +154,7 @@ public class Magpie
     public String transformIYouStatement(String statement)
     {
         //your code here
-        return "";
+        return "Why do you " + statement.substring(2, statement.indexOf("you")) + "me?";
     }
 
     /**
@@ -129,7 +166,7 @@ public class Magpie
     public String transformIWantToStatement(String statement)
     {
         // your code here
-        return "";
+        return "What would it mean to" + statement.substring(9) + "?";
     }
 
 
@@ -143,7 +180,8 @@ public class Magpie
      */
     public String transformYouMeStatement(String statement)
     {
+        String newStatement = statement.substring(statement.indexOf("you"));
         // your code here
-        return "";
+        return "What makes you think that I " + newStatement.substring(4, newStatement.indexOf(" me")) + " you?";
     }
 }
